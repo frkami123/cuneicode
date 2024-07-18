@@ -34,10 +34,12 @@ cmake_policy(VERSION 3.21)
 # Includes a bunch of basic flags and utilities shared across projects
 # See more at the github repository link below
 include(FetchContent)
+if(NOT DEFINED ZTD_CMAKE_PROJECT_PRELUDE)
 FetchContent_Declare(ztd.cmake
 	GIT_REPOSITORY https://github.com/soasis/cmake
 	GIT_TAG main)
 FetchContent_MakeAvailable(ztd.cmake)
+endif()
 set(CMAKE_PROJECT_INCLUDE ${ZTD_CMAKE_PROJECT_PRELUDE})
 
 # # Project declaration
@@ -139,16 +141,20 @@ option(ZTD_CUNEICODE_GENERATE_SINGLE "Enable generation of a single header and i
 option(ZTD_CUNEICODE_SIMDUTF_SHARED "Enable the simdutf shared target for cuneicode" OFF)
 
 # # Dependencies
+if(NOT TARGET ztd.idk)
 # ztd.idk
 FetchContent_Declare(ztd.idk
 	GIT_REPOSITORY https://github.com/soasis/idk.git
 	GIT_TAG main)
 FetchContent_MakeAvailable(ztd.idk)
+endif()
+if(NOT TARGET ztd.encoding_tables)
 # ztd.encoding_tables
 FetchContent_Declare(ztd.encoding_tables
 	GIT_REPOSITORY https://github.com/soasis/encoding_tables.git
 	GIT_TAG main)
 FetchContent_MakeAvailable(ztd.encoding_tables)
+endif()
 
 # # Main Library
 file(GLOB ztd.cuneicode.includes CONFIGURE_DEPENDS include/*.hpp)
